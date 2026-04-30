@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DjibCare Admin</title>
+</head>
+<body>
+  <h1>DjibCare Appointments Dashboard</h1>
+  <div id="appointments"></div>
+
+  <script>
+    async function loadAppointments() {
+      const response = await fetch("http://127.0.0.1:8000/appointments");
+      const appointments = await response.json();
+
+      let html = "";
+
+      appointments.forEach(app => {
+        html += `
+          <div style="border:1px solid #ddd; padding:15px; margin:10px; border-radius:10px;">
+            <h3>${app.full_name}</h3>
+            <p><strong>Phone:</strong> ${app.phone}</p>
+            <p><strong>Date:</strong> ${app.preferred_date}</p>
+            <p><strong>Time:</strong> ${app.preferred_time}</p>
+            <p><strong>Reason:</strong> ${app.reason}</p>
+          </div>
+        `;
+      });
+
+      document.getElementById("appointments").innerHTML = html;
+    }
+
+    loadAppointments();
+  </script>
+</body>
+</html>

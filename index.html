@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DjibCare AI Agent</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      color: #0f766e;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    button {
+      background: #0f766e;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .response {
+      margin-top: 20px;
+      padding: 15px;
+      background: #ecfdf5;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>DjibCare AI Appointment Agent</h1>
+    <p>Book clinic appointments and get basic clinic information.</p>
+
+    <h3>Chat with Agent</h3>
+    <textarea id="message" placeholder="Example: I want to book an appointment"></textarea>
+    <button onclick="sendMessage()">Send Message</button>
+    <div id="chatResponse" class="response"></div>
+
+    <h3>Book Appointment</h3>
+    <input id="full_name" placeholder="Full Name">
+    <input id="phone" placeholder="Phone Number">
+    <input id="preferred_date" placeholder="Preferred Date">
+    <input id="preferred_time" placeholder="Preferred Time">
+    <input id="reason" placeholder="Reason for Visit">
+    <button onclick="bookAppointment()">Book Appointment</button>
+    <div id="bookingResponse" class="response"></div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+  const message = document.getElementById("message").value;
+
+  const response = await fetch("http://127.0.0.1:8000/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message})
+  });
+
+  const data = await response.json();
+
+  document.getElementById("chatResponse").innerText = data.message;
+
+  // Fill form
+  if (data.full_name) document.getElementById("full_name").value = data.full_name;
+  if (data.phone) document.getElementById("phone").value = data.phone;
+  if (data.preferred_date) document.getElementById("preferred_date").value = data.preferred_date;
+  if (data.preferred_time) document.getElementById("preferred_time").value = data.preferred_time;
+  if (data.reason) document.getElementById("reason").value = data.reason;
+
+  // ✅ AUTO BOOK if all fields exist
+  if (
+    data.full_name &&
+    data.phone &&
+    data.preferred_date &&
+    data.preferred_time &&
+    data.reason
+  ) {
+    const bookingResponse = await fetch("http://127.0.0.1:8000/book-appointment", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data)
+    });
+
+    const bookingData = await bookingResponse.json();
+
+    document.getElementById("bookingResponse").innerText =
+      `✅ Appointment booked automatically for ${bookingData.patient} (ID: ${bookingData.appointment_id})`;
+  }
+}
+
+    async function bookAppointment() {
+      const appointment = {
+        full_name: document.getElementById("full_name").value,
+        phone: document.getElementById("phone").value,
+        preferred_date: document.getElementById("preferred_date").value,
+        preferred_time: document.getElementById("preferred_time").value,
+        reason: document.getElementById("reason").value
+      };
+
+      const response = await fetch("http://127.0.0.1:8000/book-appointment", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(appointment)
+      });
+
+      const data = await response.json();
+      document.getElementById("bookingResponse").innerText =
+        `Appointment saved for ${data.patient}. ID: ${data.appointment_id}`;
+    }
+  </script>
+</body>
+</html>
