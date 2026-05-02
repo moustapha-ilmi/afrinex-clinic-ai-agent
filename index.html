@@ -1,93 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DjibCare AI Agent</title>
+  <title>DjibCare AI</title>
   <style>
     body {
       margin: 0;
       font-family: Inter, Arial, sans-serif;
-      background: linear-gradient(135deg, #ecfeff, #f8fafc);
+      background: linear-gradient(135deg, #ecfdf5, #f8fafc);
       color: #0f172a;
-    }
-
-    .navbar {
-      padding: 24px 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-weight: 800;
-      font-size: 22px;
-      color: #0f766e;
-    }
-
-    .badge {
-      background: #ccfbf1;
-      color: #0f766e;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 700;
     }
 
     .hero {
       max-width: 1100px;
-      margin: 40px auto;
+      margin: auto;
+      padding: 60px 24px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 40px;
-      padding: 20px;
       align-items: center;
     }
 
-    .hero h1 {
-      font-size: 52px;
-      line-height: 1.05;
+    .badge {
+      display: inline-block;
+      background: #ccfbf1;
+      color: #0f766e;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 700;
       margin-bottom: 20px;
     }
 
-    .hero p {
-      font-size: 18px;
-      color: #475569;
-      line-height: 1.7;
+    h1 {
+      font-size: 52px;
+      line-height: 1.05;
+      margin: 0;
     }
 
-    .highlight {
-      color: #0f766e;
+    .subtitle {
+      font-size: 19px;
+      color: #475569;
+      margin-top: 20px;
+    }
+
+    .features {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .feature {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      font-weight: 700;
     }
 
     .card {
       background: white;
-      padding: 32px;
+      padding: 30px;
       border-radius: 28px;
       box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
-      border: 1px solid #e2e8f0;
     }
 
     textarea, input {
       width: 100%;
       box-sizing: border-box;
       padding: 14px;
-      margin-top: 10px;
+      margin-top: 12px;
       border-radius: 14px;
       border: 1px solid #cbd5e1;
       font-size: 15px;
-      outline: none;
     }
 
-    textarea:focus, input:focus {
-      border-color: #0f766e;
-      box-shadow: 0 0 0 3px #ccfbf1;
+    textarea {
+      min-height: 110px;
     }
 
     button {
       width: 100%;
-      padding: 15px;
       margin-top: 14px;
-      border-radius: 14px;
+      padding: 15px;
       border: none;
+      border-radius: 14px;
       background: #0f766e;
       color: white;
       font-size: 16px;
@@ -100,95 +96,79 @@
     }
 
     .response {
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 14px;
+      margin-top: 16px;
       background: #ecfdf5;
-      color: #065f46;
-      font-weight: 600;
-      min-height: 20px;
+      border-left: 5px solid #0f766e;
+      padding: 14px;
+      border-radius: 12px;
+      color: #064e3b;
+      white-space: pre-line;
     }
 
     .section-title {
       margin-top: 24px;
-      font-size: 20px;
-      font-weight: 800;
+      margin-bottom: 5px;
+      font-size: 18px;
     }
 
-    .features {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 25px;
+    .footer {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
     }
 
-    .feature {
-      background: white;
-      border: 1px solid #e2e8f0;
-      padding: 12px 16px;
-      border-radius: 16px;
-      font-weight: 700;
-      color: #334155;
-    }
-
-    @media (max-width: 850px) {
+    @media(max-width: 800px) {
       .hero {
         grid-template-columns: 1fr;
       }
 
-      .hero h1 {
-        font-size: 38px;
-      }
-
-      .navbar {
-        padding: 20px;
+      h1 {
+        font-size: 40px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="navbar">
-    <div class="logo">DjibCare AI</div>
-    <div class="badge">AI Healthcare Assistant</div>
-  </div>
-
-  <div class="hero">
-    <div>
-      <h1>Book clinic appointments with a <span class="highlight">smart AI agent</span>.</h1>
-      <p>
-        DjibCare AI helps patients schedule appointments through natural conversation.
-        It understands patient requests, extracts appointment details, and saves bookings automatically.
+  <main class="hero">
+    <section>
+      <div class="badge">Afrinex AI Product</div>
+      <h1>DjibCare AI</h1>
+      <p class="subtitle">
+        Smart WhatsApp appointment system for clinics. Patients can book appointments through natural conversation.
       </p>
 
       <div class="features">
         <div class="feature">AI Chat</div>
         <div class="feature">Auto Booking</div>
+        <div class="feature">WhatsApp Ready</div>
         <div class="feature">Clinic Dashboard</div>
-        <div class="feature">FastAPI Backend</div>
       </div>
-    </div>
+    </section>
 
-    <div class="card">
-      <h2>Appointment Assistant</h2>
+    <section class="card">
+      <h2>Book an Appointment</h2>
+      <p>Try the AI agent below.</p>
 
-      <textarea id="message" rows="4" placeholder="Example: My name is Moustapha Ilmi, phone 7018640231, I want an appointment tomorrow at 10am for checkup"></textarea>
+      <textarea id="message" placeholder="Example: My name is Moustapha Ilmi, phone 7018640231, I want an appointment on May 5 at 10 AM for checkup"></textarea>
       <button onclick="sendMessage()">Send to AI Agent</button>
 
       <div id="chatResponse" class="response"></div>
 
-      <div class="section-title">Appointment Details</div>
-
+      <h3 class="section-title">Appointment Details</h3>
       <input id="full_name" placeholder="Full Name">
       <input id="phone" placeholder="Phone Number">
       <input id="preferred_date" placeholder="Preferred Date">
       <input id="preferred_time" placeholder="Preferred Time">
       <input id="reason" placeholder="Reason for Visit">
 
-      <button onclick="bookAppointment()">Book Appointment</button>
-
+      <button onclick="bookAppointment()">Book Manually</button>
       <div id="bookingResponse" class="response"></div>
-    </div>
+    </section>
+  </main>
+
+  <div class="footer">
+    Built by Moustapha Ilmi · Afrinex AI · DjibCare AI
   </div>
 
   <script>
@@ -205,7 +185,7 @@
 
       const data = await response.json();
 
-      document.getElementById("chatResponse").innerText = data.message;
+      document.getElementById("chatResponse").innerText = data.message || "AI response received.";
 
       if (data.full_name) document.getElementById("full_name").value = data.full_name;
       if (data.phone) document.getElementById("phone").value = data.phone;
@@ -213,13 +193,7 @@
       if (data.preferred_time) document.getElementById("preferred_time").value = data.preferred_time;
       if (data.reason) document.getElementById("reason").value = data.reason;
 
-      if (
-        data.full_name &&
-        data.phone &&
-        data.preferred_date &&
-        data.preferred_time &&
-        data.reason
-      ) {
+      if (data.full_name && data.phone && data.preferred_date && data.preferred_time && data.reason) {
         await bookAppointment();
       }
     }
@@ -242,7 +216,7 @@
       const data = await response.json();
 
       document.getElementById("bookingResponse").innerText =
-        `✅ Appointment saved for ${data.patient}. ID: ${data.appointment_id}`;
+        `✅ Appointment booked for ${data.patient}. Booking ID: ${data.appointment_id}`;
     }
   </script>
 </body>

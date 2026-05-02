@@ -1,32 +1,190 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DjibCare Admin</title>
+  <title>DjibCare Admin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0f766e, #115e59);
+      color: white;
+      padding: 35px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    .header p {
+      margin-top: 8px;
+      color: #ccfbf1;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: -25px auto 40px;
+      padding: 0 24px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .stat h2 {
+      margin: 0;
+      font-size: 32px;
+      color: #0f766e;
+    }
+
+    .stat p {
+      margin: 6px 0 0;
+      color: #64748b;
+    }
+
+    .appointments {
+      background: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      color: #475569;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      background: #ccfbf1;
+      color: #0f766e;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    button {
+      background: #0f766e;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    @media(max-width: 800px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>DjibCare Appointments Dashboard</h1>
-  <div id="appointments"></div>
+  <div class="header">
+    <h1>DjibCare Admin Dashboard</h1>
+    <p>Manage AI-powered clinic appointment requests.</p>
+  </div>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat">
+        <h2 id="totalAppointments">0</h2>
+        <p>Total Appointments</p>
+      </div>
+
+      <div class="stat">
+        <h2>AI</h2>
+        <p>Booking System</p>
+      </div>
+
+      <div class="stat">
+        <h2>Live</h2>
+        <p>WhatsApp Connected</p>
+      </div>
+    </div>
+
+    <div class="appointments">
+      <h2>Appointments</h2>
+      <button onclick="loadAppointments()">Refresh Dashboard</button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Phone</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Reason</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="appointmentsTable"></tbody>
+      </table>
+    </div>
+  </div>
 
   <script>
+    const API_URL = "https://afrinex-clinic-ai-agent.onrender.com";
+
     async function loadAppointments() {
-      const response = await fetch("https://YOUR-RENDER-LINK.onrender.com/appointments");
+      const response = await fetch(`${API_URL}/appointments`);
       const appointments = await response.json();
 
-      let html = "";
+      document.getElementById("totalAppointments").innerText = appointments.length;
+
+      let rows = "";
 
       appointments.forEach(app => {
-        html += `
-          <div style="border:1px solid #ddd; padding:15px; margin:10px; border-radius:10px;">
-            <h3>${app.full_name}</h3>
-            <p><strong>Phone:</strong> ${app.phone}</p>
-            <p><strong>Date:</strong> ${app.preferred_date}</p>
-            <p><strong>Time:</strong> ${app.preferred_time}</p>
-            <p><strong>Reason:</strong> ${app.reason}</p>
-          </div>
+        rows += `
+          <tr>
+            <td>${app.id}</td>
+            <td><strong>${app.full_name}</strong></td>
+            <td>${app.phone}</td>
+            <td>${app.preferred_date}</td>
+            <td>${app.preferred_time}</td>
+            <td>${app.reason}</td>
+            <td><span class="badge">Booked</span></td>
+          </tr>
         `;
       });
 
-      document.getElementById("appointments").innerHTML = html;
+      document.getElementById("appointmentsTable").innerHTML = rows;
     }
 
     loadAppointments();
