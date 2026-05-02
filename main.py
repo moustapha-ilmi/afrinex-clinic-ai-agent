@@ -1,3 +1,5 @@
+import re
+from fastapi import Response
 from fastapi.responses import Response
 from fastapi import Form
 from twilio.twiml.messaging_response import MessagingResponse
@@ -148,19 +150,58 @@ def get_appointments():
 
 @app.post("/whatsapp")
 def whatsapp_webhook(Body: str = Form(...), From: str = Form(...)):
-    response = MessagingResponse()
-    response.message("Hello from DjibCare AI. I received your WhatsApp message.")
-    return Response(content=str(response), media_type="application/xml")
+    incoming_message = Body.strip()
+    twilio_response = MessagingResponse()
 
-    if "appointment" in msg or "book" in msg:
-        response.message(
-            "Welcome to DjibCare AI. Please send your full name, preferred date, preferred time, and reason for visit."
+    # Simple extractor for first working WhatsApp demo
+    name_match = re.search(r"my name is ([a-zA-Z\s]+)", incoming_message, re.IGNORECASE)
+    phone_match = re.search(r"(\d{9,15})", incoming_message)
+    date_match = re.search(r"(may\s+\d+|tomorrow|today|\d{4}-\d{2}-\d{2})", incoming_message, re.IGNORECASE)
+    time_match = re.search(r"(\d{1,2}\s?(am|pm)|\d{1,2}:\d{2})", incoming_message, re.IGNORECASE)
+
+    full_name = name_match.group(1).strip() if name_match else ""
+    phone = phone_match.group(1).strip() if phone_match else From.replace("whatsapp:", "")
+    preferred_date = date_match.group(1).strip() if date_match else ""
+    preferred_time = time_match.group(1).strip() if time_match else ""
+
+    reason = "General consultation"
+    if "checkup" in incoming_message.lower():
+        reason = "Checkup"
+    elif "consultation" in incoming_message.lower():
+        reason = "Consultation"
+    elif "pain" in incoming_message.lower():
+        reason = "Pain / Medical concern"
+
+    if full_name and phone and preferred_date and preferred_time:
+        db = SessionLocal()
+
+        new_appointment = Appointment(
+            full_name=full_name,
+            phone=phone,
+            preferred_date=preferred_date,
+            preferred_time=preferred_time,
+            reason=reason
         )
-    elif "hours" in msg or "open" in msg:
-        response.message("The clinic is open Monday to Saturday from 8:00 AM to 6:00 PM.")
+
+        db.add(new_appointment)
+        db.commit()
+        db.refresh(new_appointment)
+        db.close()
+
+        twilio_response.message(
+            f"✅ Appointment booked successfully!\n\n"
+            f"Patient: {full_name}\n"
+            f"Date: {preferred_date}\n"
+            f"Time: {preferred_time}\n"
+            f"Reason: {reason}\n"
+            f"Booking ID: {new_appointment.id}"
+        )
+
     else:
-        response.message(
-            "Hello, I’m DjibCare AI. I can help you book a clinic appointment. Type: I want to book an appointment."
+        twilio_response.message(
+            "Welcome to DjibCare AI.\n\n"
+            "Please send your appointment request like this:\n\n"
+            "My name is Moustapha Ilmi, phone 7018640231, I want an appointment on May 5 at 10 AM for checkup"
         )
 
-    return str(response)
+    return Response(content=str(twilio_response), media_type="application/xml")
