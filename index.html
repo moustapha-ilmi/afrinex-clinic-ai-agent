@@ -4,111 +4,225 @@
   <title>DjibCare AI Agent</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      padding: 40px;
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(135deg, #ecfeff, #f8fafc);
+      color: #0f172a;
     }
 
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    .navbar {
+      padding: 24px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    h1 {
+    .logo {
+      font-weight: 800;
+      font-size: 22px;
       color: #0f766e;
     }
 
-    input, textarea, button {
+    .badge {
+      background: #ccfbf1;
+      color: #0f766e;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .hero {
+      max-width: 1100px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      padding: 20px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: 52px;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    .highlight {
+      color: #0f766e;
+    }
+
+    .card {
+      background: white;
+      padding: 32px;
+      border-radius: 28px;
+      box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
+      border: 1px solid #e2e8f0;
+    }
+
+    textarea, input {
       width: 100%;
-      padding: 12px;
+      box-sizing: border-box;
+      padding: 14px;
       margin-top: 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 16px;
+      border-radius: 14px;
+      border: 1px solid #cbd5e1;
+      font-size: 15px;
+      outline: none;
+    }
+
+    textarea:focus, input:focus {
+      border-color: #0f766e;
+      box-shadow: 0 0 0 3px #ccfbf1;
     }
 
     button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 14px;
+      border-radius: 14px;
+      border: none;
       background: #0f766e;
       color: white;
-      border: none;
+      font-size: 16px;
+      font-weight: 800;
       cursor: pointer;
-      font-weight: bold;
+    }
+
+    button:hover {
+      background: #115e59;
     }
 
     .response {
-      margin-top: 20px;
-      padding: 15px;
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 14px;
       background: #ecfdf5;
-      border-radius: 8px;
+      color: #065f46;
+      font-weight: 600;
+      min-height: 20px;
+    }
+
+    .section-title {
+      margin-top: 24px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .features {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .feature {
+      background: white;
+      border: 1px solid #e2e8f0;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    @media (max-width: 850px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .navbar {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>DjibCare AI Appointment Agent</h1>
-    <p>Book clinic appointments and get basic clinic information.</p>
+  <div class="navbar">
+    <div class="logo">DjibCare AI</div>
+    <div class="badge">AI Healthcare Assistant</div>
+  </div>
 
-    <h3>Chat with Agent</h3>
-    <textarea id="message" placeholder="Example: I want to book an appointment"></textarea>
-    <button onclick="sendMessage()">Send Message</button>
-    <div id="chatResponse" class="response"></div>
+  <div class="hero">
+    <div>
+      <h1>Book clinic appointments with a <span class="highlight">smart AI agent</span>.</h1>
+      <p>
+        DjibCare AI helps patients schedule appointments through natural conversation.
+        It understands patient requests, extracts appointment details, and saves bookings automatically.
+      </p>
 
-    <h3>Book Appointment</h3>
-    <input id="full_name" placeholder="Full Name">
-    <input id="phone" placeholder="Phone Number">
-    <input id="preferred_date" placeholder="Preferred Date">
-    <input id="preferred_time" placeholder="Preferred Time">
-    <input id="reason" placeholder="Reason for Visit">
-    <button onclick="bookAppointment()">Book Appointment</button>
-    <div id="bookingResponse" class="response"></div>
+      <div class="features">
+        <div class="feature">AI Chat</div>
+        <div class="feature">Auto Booking</div>
+        <div class="feature">Clinic Dashboard</div>
+        <div class="feature">FastAPI Backend</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Appointment Assistant</h2>
+
+      <textarea id="message" rows="4" placeholder="Example: My name is Moustapha Ilmi, phone 7018640231, I want an appointment tomorrow at 10am for checkup"></textarea>
+      <button onclick="sendMessage()">Send to AI Agent</button>
+
+      <div id="chatResponse" class="response"></div>
+
+      <div class="section-title">Appointment Details</div>
+
+      <input id="full_name" placeholder="Full Name">
+      <input id="phone" placeholder="Phone Number">
+      <input id="preferred_date" placeholder="Preferred Date">
+      <input id="preferred_time" placeholder="Preferred Time">
+      <input id="reason" placeholder="Reason for Visit">
+
+      <button onclick="bookAppointment()">Book Appointment</button>
+
+      <div id="bookingResponse" class="response"></div>
+    </div>
   </div>
 
   <script>
+    const API_URL = "https://afrinex-clinic-ai-agent.onrender.com";
+
     async function sendMessage() {
-  const message = document.getElementById("message").value;
+      const message = document.getElementById("message").value;
 
-  const response = await fetch("http://127.0.0.1:8000/chat", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({message})
-  });
+      const response = await fetch(`${API_URL}/chat`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message})
+      });
 
-  const data = await response.json();
+      const data = await response.json();
 
-  document.getElementById("chatResponse").innerText = data.message;
+      document.getElementById("chatResponse").innerText = data.message;
 
-  // Fill form
-  if (data.full_name) document.getElementById("full_name").value = data.full_name;
-  if (data.phone) document.getElementById("phone").value = data.phone;
-  if (data.preferred_date) document.getElementById("preferred_date").value = data.preferred_date;
-  if (data.preferred_time) document.getElementById("preferred_time").value = data.preferred_time;
-  if (data.reason) document.getElementById("reason").value = data.reason;
+      if (data.full_name) document.getElementById("full_name").value = data.full_name;
+      if (data.phone) document.getElementById("phone").value = data.phone;
+      if (data.preferred_date) document.getElementById("preferred_date").value = data.preferred_date;
+      if (data.preferred_time) document.getElementById("preferred_time").value = data.preferred_time;
+      if (data.reason) document.getElementById("reason").value = data.reason;
 
-  // ✅ AUTO BOOK if all fields exist
-  if (
-    data.full_name &&
-    data.phone &&
-    data.preferred_date &&
-    data.preferred_time &&
-    data.reason
-  ) {
-    const bookingResponse = await fetch("http://127.0.0.1:8000/book-appointment", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(data)
-    });
-
-    const bookingData = await bookingResponse.json();
-
-    document.getElementById("bookingResponse").innerText =
-      `✅ Appointment booked automatically for ${bookingData.patient} (ID: ${bookingData.appointment_id})`;
-  }
-}
+      if (
+        data.full_name &&
+        data.phone &&
+        data.preferred_date &&
+        data.preferred_time &&
+        data.reason
+      ) {
+        await bookAppointment();
+      }
+    }
 
     async function bookAppointment() {
       const appointment = {
@@ -119,15 +233,16 @@
         reason: document.getElementById("reason").value
       };
 
-      const response = await fetch("http://127.0.0.1:8000/book-appointment", {
+      const response = await fetch(`${API_URL}/book-appointment`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(appointment)
       });
 
       const data = await response.json();
+
       document.getElementById("bookingResponse").innerText =
-        `Appointment saved for ${data.patient}. ID: ${data.appointment_id}`;
+        `✅ Appointment saved for ${data.patient}. ID: ${data.appointment_id}`;
     }
   </script>
 </body>

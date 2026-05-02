@@ -1,3 +1,5 @@
+from fastapi import Form
+from twilio.twiml.messaging_response import MessagingResponse
 from fastapi import FastAPI
 from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, Integer, String
@@ -142,3 +144,20 @@ def get_appointments():
     appointments = db.query(Appointment).all()
     db.close()
     return appointments
+@app.post("/whatsapp")
+def whatsapp_webhook(Body: str = Form(...), From: str = Form(...)):
+    msg = Body.lower()
+    response = MessagingResponse()
+
+    if "appointment" in msg or "book" in msg:
+        response.message(
+            "Welcome to DjibCare AI. Please send your full name, preferred date, preferred time, and reason for visit."
+        )
+    elif "hours" in msg or "open" in msg:
+        response.message("The clinic is open Monday to Saturday from 8:00 AM to 6:00 PM.")
+    else:
+        response.message(
+            "Hello, I’m DjibCare AI. I can help you book a clinic appointment. Type: I want to book an appointment."
+        )
+
+    return str(response)
