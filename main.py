@@ -1,3 +1,4 @@
+from fastapi.responses import Response
 from fastapi import Form
 from twilio.twiml.messaging_response import MessagingResponse
 from fastapi import FastAPI
@@ -144,10 +145,12 @@ def get_appointments():
     appointments = db.query(Appointment).all()
     db.close()
     return appointments
+
 @app.post("/whatsapp")
 def whatsapp_webhook(Body: str = Form(...), From: str = Form(...)):
-    msg = Body.lower()
     response = MessagingResponse()
+    response.message("Hello from DjibCare AI. I received your WhatsApp message.")
+    return Response(content=str(response), media_type="application/xml")
 
     if "appointment" in msg or "book" in msg:
         response.message(
