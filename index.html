@@ -1,223 +1,435 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>DjibCare AI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DjibCare AI | WhatsApp Appointment System for Clinics</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Inter, Arial, sans-serif;
-      background: linear-gradient(135deg, #ecfdf5, #f8fafc);
+      background: #f8fafc;
       color: #0f172a;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 7%;
+      background: rgba(255, 255, 255, 0.9);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: #0f766e;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      color: #475569;
+      font-weight: 700;
     }
 
     .hero {
-      max-width: 1100px;
-      margin: auto;
-      padding: 60px 24px;
+      padding: 90px 7% 70px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
       align-items: center;
+      background: linear-gradient(135deg, #ecfdf5, #ffffff 55%, #f0fdfa);
     }
 
     .badge {
       display: inline-block;
       background: #ccfbf1;
       color: #0f766e;
-      padding: 8px 14px;
+      padding: 8px 15px;
       border-radius: 999px;
-      font-weight: 700;
+      font-weight: 900;
       margin-bottom: 20px;
     }
 
     h1 {
-      font-size: 52px;
-      line-height: 1.05;
-      margin: 0;
+      font-size: 58px;
+      line-height: 1.04;
+      margin: 0 0 22px;
+      letter-spacing: -2px;
     }
 
-    .subtitle {
-      font-size: 19px;
+    .hero p {
+      font-size: 20px;
       color: #475569;
-      margin-top: 20px;
+      max-width: 680px;
     }
 
-    .features {
+    .cta-row {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-top: 25px;
+      margin-top: 28px;
     }
 
-    .feature {
-      background: white;
-      padding: 12px 16px;
+    .btn {
+      padding: 15px 22px;
       border-radius: 14px;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-      font-weight: 700;
+      font-weight: 900;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #0f766e;
+      color: white;
+      box-shadow: 0 15px 30px rgba(15, 118, 110, 0.25);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #0f766e;
+      border: 1px solid #99f6e4;
+    }
+
+    .phone-card {
+      background: #0f172a;
+      color: white;
+      border-radius: 34px;
+      padding: 26px;
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+      max-width: 430px;
+      margin-left: auto;
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+    }
+
+    .status {
+      color: #5eead4;
+      font-weight: 800;
+    }
+
+    .bubble {
+      padding: 14px 16px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .bubble.user {
+      background: #334155;
+      margin-left: 40px;
+    }
+
+    .bubble.ai {
+      background: #0f766e;
+      margin-right: 40px;
+    }
+
+    .section {
+      padding: 80px 7%;
+    }
+
+    .section h2 {
+      font-size: 40px;
+      line-height: 1.15;
+      margin: 0 0 14px;
+      letter-spacing: -1px;
+    }
+
+    .section-intro {
+      color: #64748b;
+      font-size: 18px;
+      max-width: 760px;
+      margin-bottom: 36px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
     }
 
     .card {
       background: white;
-      padding: 30px;
-      border-radius: 28px;
-      box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.07);
+      border: 1px solid #e2e8f0;
     }
 
-    textarea, input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 14px;
-      margin-top: 12px;
+    .icon {
+      width: 46px;
+      height: 46px;
       border-radius: 14px;
-      border: 1px solid #cbd5e1;
-      font-size: 15px;
+      background: #ccfbf1;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      margin-bottom: 18px;
     }
 
-    textarea {
-      min-height: 110px;
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
     }
 
-    button {
-      width: 100%;
-      margin-top: 14px;
-      padding: 15px;
-      border: none;
-      border-radius: 14px;
-      background: #0f766e;
+    .card p {
+      color: #64748b;
+      margin: 0;
+    }
+
+    .process {
+      background: #0f172a;
       color: white;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
     }
 
-    button:hover {
-      background: #115e59;
+    .process .section-intro {
+      color: #cbd5e1;
     }
 
-    .response {
-      margin-top: 16px;
-      background: #ecfdf5;
-      border-left: 5px solid #0f766e;
-      padding: 14px;
-      border-radius: 12px;
-      color: #064e3b;
-      white-space: pre-line;
+    .step {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
-    .section-title {
-      margin-top: 24px;
-      margin-bottom: 5px;
-      font-size: 18px;
+    .step-number {
+      color: #5eead4;
+      font-weight: 900;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .pricing {
+      background: linear-gradient(135deg, #f8fafc, #ecfdf5);
+    }
+
+    .price {
+      font-size: 42px;
+      font-weight: 900;
+      color: #0f766e;
+      margin: 15px 0;
+    }
+
+    ul {
+      padding-left: 20px;
+      color: #475569;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .pitch-box {
+      background: white;
+      border-radius: 28px;
+      padding: 34px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.09);
+      border-left: 7px solid #0f766e;
     }
 
     .footer {
-      text-align: center;
-      padding: 30px;
-      color: #64748b;
+      padding: 36px 7%;
+      background: #0f172a;
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
-    @media(max-width: 800px) {
-      .hero {
+    @media (max-width: 900px) {
+      .hero,
+      .grid-3 {
         grid-template-columns: 1fr;
       }
 
       h1 {
-        font-size: 40px;
+        font-size: 42px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .phone-card {
+        margin: 0;
+        max-width: 100%;
       }
     }
   </style>
 </head>
-
 <body>
-  <main class="hero">
-    <section>
-      <div class="badge">Afrinex AI Product</div>
-      <h1>DjibCare AI</h1>
-      <p class="subtitle">
-        Smart WhatsApp appointment system for clinics. Patients can book appointments through natural conversation.
+  <nav class="navbar">
+    <div class="logo">DjibCare AI</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#pitch">Pitch</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <div class="badge">Powered by Afrinex AI</div>
+      <h1>WhatsApp appointment booking for modern clinics.</h1>
+      <p>
+        DjibCare AI helps clinics automate patient scheduling through WhatsApp. Patients send a simple message, the AI collects appointment details, saves the booking, and confirms instantly.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#pitch">View Clinic Pitch</a>
+        <a class="btn btn-secondary" href="admin.html">Open Dashboard</a>
+      </div>
+    </div>
+
+    <div class="phone-card">
+      <div class="chat-header">
+        <strong>WhatsApp Demo</strong>
+        <span class="status">Live</span>
+      </div>
+      <div class="bubble user">Hi, I want to book an appointment tomorrow at 10 AM.</div>
+      <div class="bubble ai">Of course. Please send your name, phone number, and reason for visit.</div>
+      <div class="bubble user">My name is Moustapha Ilmi, phone 7018640231, for checkup.</div>
+      <div class="bubble ai">✅ Appointment confirmed. Booking ID: 24. We will contact you shortly.</div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <h2>Built for real clinic operations.</h2>
+    <p class="section-intro">A practical AI system that reduces phone calls, saves staff time, and helps patients book appointments using the messaging app they already use.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon">💬</div>
+        <h3>WhatsApp Booking</h3>
+        <p>Patients book appointments directly through WhatsApp without downloading an app or filling long forms.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h3>AI Data Capture</h3>
+        <p>The assistant collects name, phone, date, time, and reason for visit from natural conversation.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📊</div>
+        <h3>Clinic Dashboard</h3>
+        <p>Clinic staff can view appointment requests in a clean dashboard and manage patient bookings.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section process" id="how">
+    <h2>How it works</h2>
+    <p class="section-intro">Simple, fast, and built for clinics that want automation without complexity.</p>
+
+    <div class="grid-3">
+      <div class="card step">
+        <div class="step-number">STEP 01</div>
+        <h3>Patient sends WhatsApp message</h3>
+        <p>A patient asks to book an appointment using normal language.</p>
+      </div>
+      <div class="card step">
+        <div class="step-number">STEP 02</div>
+        <h3>AI collects details</h3>
+        <p>DjibCare AI extracts appointment information and asks for missing details.</p>
+      </div>
+      <div class="card step">
+        <div class="step-number">STEP 03</div>
+        <h3>Booking is saved</h3>
+        <p>The appointment is stored in the clinic dashboard with a confirmation message sent instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pricing" id="pricing">
+    <h2>Simple pricing for clinics</h2>
+    <p class="section-intro">Start with setup, then offer monthly support and hosting.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Starter Setup</h3>
+        <div class="price">$299</div>
+        <ul>
+          <li>WhatsApp booking system setup</li>
+          <li>Clinic dashboard</li>
+          <li>Basic appointment automation</li>
+          <li>1 clinic location</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Growth Plan</h3>
+        <div class="price">$99/mo</div>
+        <ul>
+          <li>Hosting and maintenance</li>
+          <li>WhatsApp workflow support</li>
+          <li>Appointment dashboard updates</li>
+          <li>Priority improvements</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Enterprise</h3>
+        <div class="price">Custom</div>
+        <ul>
+          <li>Multi-clinic support</li>
+          <li>French/Arabic/English flows</li>
+          <li>Advanced reporting</li>
+          <li>Government or hospital deployment</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pitch">
+    <h2>Clinic pitch</h2>
+    <p class="section-intro">Use this when messaging clinic owners, managers, or healthcare decision-makers.</p>
+
+    <div class="pitch-box">
+      <h3>Short Pitch</h3>
+      <p>
+        Hi, my name is Moustapha Ilmi, founder of Afrinex AI. I built DjibCare AI, a WhatsApp-based appointment system that helps clinics automatically schedule patient appointments using AI. Patients can message your clinic on WhatsApp, provide their details, and receive confirmation instantly. This reduces phone calls, saves staff time, and improves patient experience.
       </p>
 
-      <div class="features">
-        <div class="feature">AI Chat</div>
-        <div class="feature">Auto Booking</div>
-        <div class="feature">WhatsApp Ready</div>
-        <div class="feature">Clinic Dashboard</div>
-      </div>
-    </section>
+      <h3>Value Proposition</h3>
+      <p>
+        DjibCare AI helps clinics operate 24/7 by automating appointment requests, capturing patient details, and organizing bookings in a simple dashboard.
+      </p>
 
-    <section class="card">
-      <h2>Book an Appointment</h2>
-      <p>Try the AI agent below.</p>
+      <h3>Call to Action</h3>
+      <p>
+        I would love to show you a quick demo and discuss how this could help your clinic reduce manual scheduling work.
+      </p>
+    </div>
+  </section>
 
-      <textarea id="message" placeholder="Example: My name is Moustapha Ilmi, phone 7018640231, I want an appointment on May 5 at 10 AM for checkup"></textarea>
-      <button onclick="sendMessage()">Send to AI Agent</button>
-
-      <div id="chatResponse" class="response"></div>
-
-      <h3 class="section-title">Appointment Details</h3>
-      <input id="full_name" placeholder="Full Name">
-      <input id="phone" placeholder="Phone Number">
-      <input id="preferred_date" placeholder="Preferred Date">
-      <input id="preferred_time" placeholder="Preferred Time">
-      <input id="reason" placeholder="Reason for Visit">
-
-      <button onclick="bookAppointment()">Book Manually</button>
-      <div id="bookingResponse" class="response"></div>
-    </section>
-  </main>
-
-  <div class="footer">
-    Built by Moustapha Ilmi · Afrinex AI · DjibCare AI
-  </div>
-
-  <script>
-    const API_URL = "https://afrinex-clinic-ai-agent.onrender.com";
-
-    async function sendMessage() {
-      const message = document.getElementById("message").value;
-
-      const response = await fetch(`${API_URL}/chat`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({message})
-      });
-
-      const data = await response.json();
-
-      document.getElementById("chatResponse").innerText = data.message || "AI response received.";
-
-      if (data.full_name) document.getElementById("full_name").value = data.full_name;
-      if (data.phone) document.getElementById("phone").value = data.phone;
-      if (data.preferred_date) document.getElementById("preferred_date").value = data.preferred_date;
-      if (data.preferred_time) document.getElementById("preferred_time").value = data.preferred_time;
-      if (data.reason) document.getElementById("reason").value = data.reason;
-
-      if (data.full_name && data.phone && data.preferred_date && data.preferred_time && data.reason) {
-        await bookAppointment();
-      }
-    }
-
-    async function bookAppointment() {
-      const appointment = {
-        full_name: document.getElementById("full_name").value,
-        phone: document.getElementById("phone").value,
-        preferred_date: document.getElementById("preferred_date").value,
-        preferred_time: document.getElementById("preferred_time").value,
-        reason: document.getElementById("reason").value
-      };
-
-      const response = await fetch(`${API_URL}/book-appointment`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(appointment)
-      });
-
-      const data = await response.json();
-
-      document.getElementById("bookingResponse").innerText =
-        `✅ Appointment booked for ${data.patient}. Booking ID: ${data.appointment_id}`;
-    }
-  </script>
+  <footer class="footer">
+    <div>
+      <strong>DjibCare AI</strong><br />
+      Smart appointment automation for clinics.
+    </div>
+    <div>
+      Built by Moustapha Ilmi · Afrinex AI
+    </div>
+  </footer>
 </body>
 </html>
